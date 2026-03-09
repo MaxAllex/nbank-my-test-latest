@@ -1,0 +1,24 @@
+package api.dto.accounts;
+
+import api.dto.BaseDto;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class TransferResponse extends BaseDto {
+    private String status;
+    private String message;
+    private Long transactionId;
+    private Long senderAccountId;
+    private Long receiverAccountId;
+    private double amount;
+    private double fraudRiskScore;
+    private String fraudReason;
+    private boolean requiresVerification;
+    private boolean requiresManualReview;
+}
