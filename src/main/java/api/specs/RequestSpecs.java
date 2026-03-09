@@ -19,7 +19,7 @@ public class RequestSpecs {
     private RequestSpecs() {
     }
 
-    private static final String baseUri = AppConfig.getProperty("server") + AppConfig.getProperty("apiVersion");
+    private static final String baseUri = AppConfig.getProperty("apibaseurl") + AppConfig.getProperty("apiVersion");
     public static final String adminToken = AppConfig.getProperty("adminToken");
     private static Map<String, String> authHeaders = new HashMap<>(Map.of("admin", "Basic YWRtaW46YWRtaW4="));
 

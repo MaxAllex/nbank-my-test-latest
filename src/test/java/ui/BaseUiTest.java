@@ -5,7 +5,7 @@ import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import tests.api.BaseTests;
+import api.BaseTests;
 import java.util.Map;
 
 public abstract class BaseUiTest extends BaseTests {
