@@ -30,6 +30,6 @@ jobs:
       - name: Run tests
         run: ./mvnw clean test -q
         env:
-          APIBASEURL: http://localhost:4111
+          APIBASEURL: http://backend:4111
           UIBASEURL: http://localhost:80
           TEST_PROFILE: api
