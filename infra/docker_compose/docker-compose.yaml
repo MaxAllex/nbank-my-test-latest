@@ -1,6 +1,6 @@
 services:
   backend:
-    image: nobugsme/nbank:preprod_version
+    image: nobugsme/nbank:with_fraud_check_with_transfer_fix
     ports:
       - "4111:4111"
     environment:
