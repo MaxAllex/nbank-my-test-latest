@@ -6,7 +6,7 @@ docker compose down
 echo ">>> Docker pull все образы браузеров"
 
 # Путь до файла
-json_file="./config/browsers.json"
+json_file="$(pwd)/config/browsers.json"
 
 # Проверяем, что jq установлен
 if ! command -v jq &> /dev/null; then

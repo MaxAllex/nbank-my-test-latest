@@ -29,3 +29,6 @@ jobs:
 
       - name: Run tests
         run: ./mvnw clean test
+        env:
+          APIBASEURL: http://backend:4111
+          UIBASEURL: http://frontend:80
