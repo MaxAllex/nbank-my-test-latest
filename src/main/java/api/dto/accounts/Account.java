@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 @Getter
 public class Account extends BaseDto {
+
     long id;
     String accountNumber;
     double balance;
