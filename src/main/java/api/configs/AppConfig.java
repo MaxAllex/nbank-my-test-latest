@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class AppConfig {
+
   private static final AppConfig INSTANCE = new AppConfig();
   private final Properties PROPERTIES = new Properties();
   private static final String CONFIG_FILE_NAME = "app-config-dev.properties";
