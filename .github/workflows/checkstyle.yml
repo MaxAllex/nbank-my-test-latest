@@ -29,7 +29,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Build project
-        run: ./mvnw -B clean package
+        run: ./mvnw -B clean package -DsceepTeests=true
 
       - name: Run Checkstyle
         run: ./mvnw checkstyle:check
