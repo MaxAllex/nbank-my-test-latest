@@ -10,10 +10,10 @@ import lombok.Getter;
 @Data
 @Getter
 public class CreateUserResponse extends BaseDto {
-    long id;
-    String username;
-    String password;
-    String name;
-    String role;
-    Account[] accounts;
+  long id;
+  String username;
+  String password;
+  String name;
+  String role;
+  Account[] accounts;
 }

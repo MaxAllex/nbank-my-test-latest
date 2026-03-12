@@ -5,35 +5,36 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class AppConfig {
-    private static final AppConfig INSTANCE = new AppConfig();
-    private final Properties PROPERTIES = new Properties();
-    private static final String CONFIG_FILE_NAME = "app-config-dev.properties";
+  private static final AppConfig INSTANCE = new AppConfig();
+  private final Properties PROPERTIES = new Properties();
+  private static final String CONFIG_FILE_NAME = "app-config-dev.properties";
 
-    private AppConfig() {
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(CONFIG_FILE_NAME)) {
+  private AppConfig() {
+    try (InputStream inputStream =
+        getClass().getClassLoader().getResourceAsStream(CONFIG_FILE_NAME)) {
 
-            if (inputStream == null) {
-                throw new IllegalStateException(CONFIG_FILE_NAME + " не найден в classpath");
-            }
+      if (inputStream == null) {
+        throw new IllegalStateException(CONFIG_FILE_NAME + " не найден в classpath");
+      }
 
-            PROPERTIES.load(inputStream);
+      PROPERTIES.load(inputStream);
 
-        } catch (IOException e) {
-            throw new IllegalStateException("Ошибка чтения " + CONFIG_FILE_NAME, e);
-        }
+    } catch (IOException e) {
+      throw new IllegalStateException("Ошибка чтения " + CONFIG_FILE_NAME, e);
+    }
+  }
+
+  public static String getProperty(String key) {
+    String systemValue = System.getProperty(key);
+    if (systemValue != null) {
+      return systemValue;
     }
 
-    public static String getProperty(String key) {
-        String systemValue = System.getProperty(key);
-        if (systemValue != null) {
-            return systemValue;
-        }
-
-        String envKey = key.toUpperCase().replace(".", "_");
-        String envValue = System.getenv(envKey);
-        if (envValue != null) {
-            return envValue;
-        }
-        return INSTANCE.PROPERTIES.getProperty(key);
+    String envKey = key.toUpperCase().replace(".", "_");
+    String envValue = System.getenv(envKey);
+    if (envValue != null) {
+      return envValue;
     }
+    return INSTANCE.PROPERTIES.getProperty(key);
+  }
 }

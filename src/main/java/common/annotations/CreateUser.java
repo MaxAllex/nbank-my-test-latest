@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CreateUser {
-    int count() default 1;
-    int auth() default 1;
+  int count() default 1;
+
+  int auth() default 1;
 }

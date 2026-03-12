@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class DepositMoneyRequest extends BaseDto {
-    private Long accountId;
-    private double amount;
+  private Long accountId;
+  private double amount;
 }

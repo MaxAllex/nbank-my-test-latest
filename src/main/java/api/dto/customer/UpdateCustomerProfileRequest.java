@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class UpdateCustomerProfileRequest{
-    String name;
+public class UpdateCustomerProfileRequest {
+  String name;
 }

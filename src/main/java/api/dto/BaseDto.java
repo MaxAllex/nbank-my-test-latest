@@ -1,4 +1,3 @@
 package api.dto;
 
-public class BaseDto {
-}
+public class BaseDto {}
