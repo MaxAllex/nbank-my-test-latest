@@ -1,35 +1,71 @@
-#name: run tests
-#
-##триггер
-#on: [push, workflow_dispatch]
-#
-#jobs:
-#  run-tests:
-#    name: set up services (review app) and run tests
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v4
-#
-#      - name: Set up JDK
-#        uses: actions/setup-java@v4
-#        with:
-#          distribution: 'temurin'
-#          java-version: '25'
-#      - name: Cache Maven repository
-#        uses: actions/cache@v4
-#        with:
-#          path: ~/.m2/repository
-#          key: ${{ runner.os }}-maven-${{hashFiles('**/pom.xml')}}
-#          restore-keys: |
-#            {{ runner.os }}-maven-
-#
-#      - name: Set up services
-#        run: cd infra/docker_compose && bash restart_docker.sh && cd ../..
-#
-#      - name: Run tests
-#        run: ./mvnw clean test -q
-#        env:
-#          APIBASEURL: http://backend:4111
-#          UIBASEURL: http://localhost:80
-#          TEST_PROFILE: api
+name: run tests
+
+#триггер
+on: [push, workflow_dispatch]
+
+jobs:
+  run-tests:
+    name: set up services (review app) and run tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '25'
+      - name: Cache Maven repository
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{hashFiles('**/pom.xml')}}
+          restore-keys: |
+            {{ runner.os }}-maven-
+
+      - name: Set up services
+        run: cd infra/docker_compose && bash restart_docker.sh && cd ../..
+
+      - name: Run tests
+        run: ./mvnw clean test -q
+        env:
+          APIBASEURL: http://backend:4111
+          UIBASEURL: http://localhost:80
+          TEST_PROFILE: api
+          APIVERSION: /api/v1
+
+      - name: Run Swagger coverage
+        if: always()
+        run: .swagger-coverage-commandline/bin/swagger-coverage-commandline -s http://localhost:4111/v3/api-docs -i target/swagger-coverage-output
+
+      - name: Load test report history
+        uses: actions/checkout@v2
+        if: always()
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Build test report
+        uses: simple-elf/allure-report-action@v1.7
+        if: always()
+        with:
+          gh_pages: gh-pages
+          allure_results: target/allure-results
+          allure_history: allure-history
+
+      - name: Build Swagger coverage report
+        if: always()
+        run: sudo cp swagger-coverage-report.html allure-history/${{ github.run_number }}
+
+      - name: Publish test report
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
+
+      - name: Clean up services
+        if: always()
+        run: cd infra/docker_compose && docker compose down
