@@ -23,8 +23,8 @@ import java.util.Map;
 public class RequestSpecs {
   private RequestSpecs() {}
 
-  private static final String baseUri =
-      AppConfig.getProperty("apibaseurl") + AppConfig.getProperty("apiVersion");
+  // API version is appended in HTTPRequestImp, so base URI must contain only host and port.
+  private static final String baseUri = AppConfig.getProperty("apibaseurl");
   public static final String adminToken = AppConfig.getProperty("adminToken");
   private static Map<String, String> authHeaders =
       new HashMap<>(Map.of("admin", "Basic YWRtaW46YWRtaW4="));
