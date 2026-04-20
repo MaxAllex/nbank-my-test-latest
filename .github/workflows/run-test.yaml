@@ -32,6 +32,21 @@ jobs:
       - name: Set up services
         run: cd infra/docker_compose && bash restart_docker.sh && cd ../..
 
+      - name: Wait for backend health
+        run: |
+          for i in {1..120}; do
+            if curl -fsS http://localhost:4111/v3/api-docs > /dev/null; then
+              echo "Backend is ready"
+              exit 0
+            fi
+            echo "Waiting for backend... ($i/120)"
+            sleep 2
+          done
+          echo "Backend is not ready in time"
+          docker compose -f infra/docker_compose/docker-compose.yaml ps
+          docker compose -f infra/docker_compose/docker-compose.yaml logs backend
+          exit 1
+
       - name: Run tests
         run: ./mvnw clean test -q
         env:
