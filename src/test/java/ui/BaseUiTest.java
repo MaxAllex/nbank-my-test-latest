@@ -4,10 +4,9 @@ import api.BaseTests;
 import api.configs.AppConfig;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
-import java.util.Map;
-
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
+import java.util.Map;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -19,9 +18,8 @@ public abstract class BaseUiTest extends BaseTests {
     Configuration.baseUrl = AppConfig.getProperty("uiBaseUrl");
     Configuration.browser = AppConfig.getProperty("uiBrowser");
     Configuration.browserSize = AppConfig.getProperty("uiBrowserSize");
-    SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
-            .screenshots(true)
-            .savePageSource(true));
+    SelenideLogger.addListener(
+        "AllureSelenide", new AllureSelenide().screenshots(true).savePageSource(true));
     Configuration.screenshots = true;
     Configuration.savePageSource = true;
     Configuration.headless = true;

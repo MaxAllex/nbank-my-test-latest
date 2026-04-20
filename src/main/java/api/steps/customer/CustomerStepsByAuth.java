@@ -23,45 +23,53 @@ public class CustomerStepsByAuth implements CustomerSteps {
 
   @Override
   public GetCustomerProfileResponse getCustomerProfile() {
-    return StepLogger.log("Get Customer Profile " , () -> {
-    return new HTTPRequestImp<Object, GetCustomerProfileResponse>(
-            RequestSpecs.authAsUser(username, password),
-            Endpoint.GET_CUSTOMER_PROFILE,
-            ResponseSpecs.requestReturnsOK())
-        .get();
-    });
+    return StepLogger.log(
+        "Get Customer Profile ",
+        () -> {
+          return new HTTPRequestImp<Object, GetCustomerProfileResponse>(
+                  RequestSpecs.authAsUser(username, password),
+                  Endpoint.GET_CUSTOMER_PROFILE,
+                  ResponseSpecs.requestReturnsOK())
+              .get();
+        });
   }
 
   @Override
   public List<GetCustomerAccountResponse> getCustomerAccounts() {
-    return StepLogger.log("Get Customer Accounts " , () -> {
-    return new HTTPRequestImp<Object, GetCustomerAccountResponse>(
-            RequestSpecs.authAsUser(username, password),
-            Endpoint.GET_CUSTOMER_ACCOUNT,
-            ResponseSpecs.requestReturnsOK())
-        .getAsList(GetCustomerAccountResponse.class);
-    });
+    return StepLogger.log(
+        "Get Customer Accounts ",
+        () -> {
+          return new HTTPRequestImp<Object, GetCustomerAccountResponse>(
+                  RequestSpecs.authAsUser(username, password),
+                  Endpoint.GET_CUSTOMER_ACCOUNT,
+                  ResponseSpecs.requestReturnsOK())
+              .getAsList(GetCustomerAccountResponse.class);
+        });
   }
 
   @Override
   public ValidatableResponse updateCustomerProfile(String name, int errorCode) {
-    return StepLogger.log("Update Customer Profile " , () -> {
-    return new ValidatedHTTPRequestImp<UpdateCustomerProfileRequest, ValidatableResponse>(
-            RequestSpecs.authAsUser(username, password),
-            Endpoint.UPDATE_CUSTOMER_PROFILE,
-            ResponseSpecs.requestReturnsError(errorCode))
-        .put(new UpdateCustomerProfileRequest(name));
-    });
+    return StepLogger.log(
+        "Update Customer Profile ",
+        () -> {
+          return new ValidatedHTTPRequestImp<UpdateCustomerProfileRequest, ValidatableResponse>(
+                  RequestSpecs.authAsUser(username, password),
+                  Endpoint.UPDATE_CUSTOMER_PROFILE,
+                  ResponseSpecs.requestReturnsError(errorCode))
+              .put(new UpdateCustomerProfileRequest(name));
+        });
   }
 
   @Override
   public ValidatableResponse updateCustomerProfile(String name) {
-    return StepLogger.log("Update Customer Profile " , () -> {
-    return new ValidatedHTTPRequestImp<UpdateCustomerProfileRequest, ValidatableResponse>(
-            RequestSpecs.authAsUser(username, password),
-            Endpoint.UPDATE_CUSTOMER_PROFILE,
-            ResponseSpecs.requestReturnsOK())
-        .put(new UpdateCustomerProfileRequest(name));
-    });
+    return StepLogger.log(
+        "Update Customer Profile ",
+        () -> {
+          return new ValidatedHTTPRequestImp<UpdateCustomerProfileRequest, ValidatableResponse>(
+                  RequestSpecs.authAsUser(username, password),
+                  Endpoint.UPDATE_CUSTOMER_PROFILE,
+                  ResponseSpecs.requestReturnsOK())
+              .put(new UpdateCustomerProfileRequest(name));
+        });
   }
 }

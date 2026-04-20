@@ -1,5 +1,7 @@
 package api.specs;
 
+import static com.github.viclovsky.swagger.coverage.SwaggerCoverageConstants.OUTPUT_DIRECTORY;
+
 import api.configs.AppConfig;
 import api.dto.authentication.LoginRequest;
 import api.http.facade.Endpoint;
@@ -13,12 +15,10 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
-
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import static com.github.viclovsky.swagger.coverage.SwaggerCoverageConstants.OUTPUT_DIRECTORY;
 
 public class RequestSpecs {
   private RequestSpecs() {}
@@ -56,10 +56,12 @@ public class RequestSpecs {
     return new RequestSpecBuilder()
         .setContentType(ContentType.JSON)
         .setAccept(ContentType.JSON)
-        .addFilters(List.of(
+        .addFilters(
+            List.of(
                 new RequestLoggingFilter(),
                 new ResponseLoggingFilter(),
-                new SwaggerCoverageRestAssured(new FileSystemOutputWriter(Paths.get("target/" + OUTPUT_DIRECTORY))),
+                new SwaggerCoverageRestAssured(
+                    new FileSystemOutputWriter(Paths.get("target/" + OUTPUT_DIRECTORY))),
                 new AllureRestAssured()))
         .setBaseUri(baseUri);
   }
