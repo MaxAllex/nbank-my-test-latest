@@ -2,11 +2,14 @@ package api.http.facade;
 
 import static io.restassured.RestAssured.given;
 
+import api.configs.AppConfig;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
 public class ValidatedHTTPRequestImp<Rec, Res> extends AbstractHTTPRequest
     implements HTTPRequest<Rec, Res> {
+  private static final String API_VERSION = AppConfig.getProperty("apiVersion");
+
   public ValidatedHTTPRequestImp(
       RequestSpecification requestSpecification,
       Endpoint endpoint,
@@ -20,7 +23,7 @@ public class ValidatedHTTPRequestImp<Rec, Res> extends AbstractHTTPRequest
         given()
             .spec(requestSpecification)
             .body(model)
-            .post(endpoint.getURL())
+            .post(API_VERSION + endpoint.getURL())
             .then()
             .assertThat()
             .spec(responseSpecification);
@@ -31,7 +34,7 @@ public class ValidatedHTTPRequestImp<Rec, Res> extends AbstractHTTPRequest
     return (Res)
         given()
             .spec(requestSpecification)
-            .get(endpoint.getURL())
+            .get(API_VERSION + endpoint.getURL())
             .then()
             .assertThat()
             .spec(responseSpecification);
@@ -43,7 +46,7 @@ public class ValidatedHTTPRequestImp<Rec, Res> extends AbstractHTTPRequest
         given()
             .spec(requestSpecification)
             .body(model)
-            .put(endpoint.getURL())
+            .put(API_VERSION + endpoint.getURL())
             .then()
             .assertThat()
             .spec(responseSpecification);
@@ -55,7 +58,7 @@ public class ValidatedHTTPRequestImp<Rec, Res> extends AbstractHTTPRequest
         given()
             .spec(requestSpecification)
             .body(model)
-            .patch(endpoint.getURL() + id)
+            .patch(API_VERSION + endpoint.getURL() + id)
             .then()
             .assertThat()
             .spec(responseSpecification);
@@ -66,7 +69,7 @@ public class ValidatedHTTPRequestImp<Rec, Res> extends AbstractHTTPRequest
     return (Res)
         given()
             .spec(requestSpecification)
-            .delete(endpoint.getURL() + id)
+            .delete(API_VERSION + endpoint.getURL() + id)
             .then()
             .assertThat()
             .spec(responseSpecification);
