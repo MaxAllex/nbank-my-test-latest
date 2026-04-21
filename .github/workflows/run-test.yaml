@@ -52,8 +52,12 @@ jobs:
         env:
           APIBASEURL: http://localhost:4111
           UIBASEURL: http://localhost:80
+          UIREMOTE: http://localhost:4444/wd/hub
           TEST_PROFILE: api
           APIVERSION: /api/v1
+          DB_URL: jdbc:postgresql://localhost:5432/nbank
+          DB_USERNAME: postgres
+          DB_PASSWORD: postgres
 
       - name: Run Swagger coverage
         if: always()

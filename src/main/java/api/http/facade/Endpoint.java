@@ -24,7 +24,7 @@ public enum Endpoint {
   LOGIN("/auth/login", LoginRequest.class, LoginResponse.class),
   CREATE_ACCOUNTS("/accounts", null, AccountResponse.class),
   DEPOSIT_MONEY("/accounts/deposit", null, AccountResponse.class),
-  TRANSFER_MONEY("accounts/transfer", TransferMoneyRequest.class, TransferMoneyResponse.class),
+  TRANSFER_MONEY("/accounts/transfer", TransferMoneyRequest.class, TransferMoneyResponse.class),
   TRANSFER_WITH_FRAUD_CHECK(
       "/accounts/transfer-with-fraud-check", TransferRequest.class, TransferResponse.class);
   private final String URL;
