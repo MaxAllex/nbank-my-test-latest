@@ -1,16 +1,20 @@
 package api.dto.accounts;
 
 import api.dto.BaseDto;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
-@Getter
+@EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class TransferMoneyResponse extends BaseDto {
-  long receiverAccountId;
-  double amount;
-  String message;
-  long senderAccountId;
+  private long receiverAccountId;
+  private double amount;
+  private String message;
+  private long senderAccountId;
 }

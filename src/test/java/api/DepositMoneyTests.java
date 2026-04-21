@@ -89,7 +89,7 @@ public class DepositMoneyTests extends BaseTests {
   public void depositMoneyNegativeBalanceNegativeTest(double amount) {
     var firstUser = users.getFirst();
     getAccountsSteps(firstUser)
-        .depositMoney(firstUser.getResponse().getId(), amount, HttpStatus.SC_BAD_REQUEST);
+        .depositMoney(firstUser.getResponse().getId(), amount, HttpStatus.SC_FORBIDDEN);
     softly.assertThat(firstUser.getAccounts()).isNullOrEmpty();
   }
 

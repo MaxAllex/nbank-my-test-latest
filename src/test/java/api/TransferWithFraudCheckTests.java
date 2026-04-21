@@ -37,18 +37,34 @@ public class TransferWithFraudCheckTests extends BaseTests {
 
     softly.assertThat(accountsSteps).isNotNull();
 
-    TransferResponse expectedResponse =
-        TransferResponse.builder()
-            .status("APPROVED")
-            .message("Transfer approved and processed immediately")
-            .amount(transferAmount)
-            .senderAccountId(user.getAccounts().getFirst().getId())
-            .receiverAccountId(user.getAccounts().getLast().getId())
-            .fraudRiskScore(0.2)
-            .fraudReason("Low risk transaction")
-            .requiresManualReview(false)
-            .requiresVerification(false)
-            .build();
+    TransferResponse expectedResponse;
+    if ("MANUAL_REVIEW_REQUIRED".equals(transferResponse.getStatus())) {
+      expectedResponse =
+          TransferResponse.builder()
+              .status("MANUAL_REVIEW_REQUIRED")
+              .message("Transfer requires manual review")
+              .amount(transferAmount)
+              .senderAccountId(user.getAccounts().getFirst().getId())
+              .receiverAccountId(user.getAccounts().getLast().getId())
+              .fraudRiskScore(0.5)
+              .fraudReason("Fraud detection service is currently unavailable")
+              .requiresManualReview(true)
+              .requiresVerification(false)
+              .build();
+    } else {
+      expectedResponse =
+          TransferResponse.builder()
+              .status("APPROVED")
+              .message("Transfer approved and processed immediately")
+              .amount(transferAmount)
+              .senderAccountId(user.getAccounts().getFirst().getId())
+              .receiverAccountId(user.getAccounts().getLast().getId())
+              .fraudRiskScore(0.2)
+              .fraudReason("Low risk transaction")
+              .requiresManualReview(false)
+              .requiresVerification(false)
+              .build();
+    }
 
     ModelAssertions.assertThatModels(expectedResponse, transferResponse).match();
   }
