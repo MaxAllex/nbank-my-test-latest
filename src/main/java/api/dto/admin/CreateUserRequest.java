@@ -8,7 +8,7 @@ import lombok.Data;
 @AllArgsConstructor
 @Builder
 public class CreateUserRequest {
-    String username;
-    String password;
-    String role;
+  String username;
+  String password;
+  String role;
 }

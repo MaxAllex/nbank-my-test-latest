@@ -1,30 +1,29 @@
 package ui.elements;
 
-import org.openqa.selenium.By;
-
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.By;
 
 public class BaseElement {
-    protected final SelenideElement element;
+  protected final SelenideElement element;
 
-    public BaseElement(SelenideElement element) {
-        this.element = element;
-    }
-    
-    protected SelenideElement find(By selector) {
-        return element.find(selector);
-    }
+  public BaseElement(SelenideElement element) {
+    this.element = element;
+  }
 
-    protected SelenideElement find(String cssSelector) {
-        return element.find(cssSelector);
-    }
+  protected SelenideElement find(By selector) {
+    return element.find(selector);
+  }
 
-    protected ElementsCollection findAll(By selector) {
-        return element.findAll(selector);
-    }
+  protected SelenideElement find(String cssSelector) {
+    return element.find(cssSelector);
+  }
 
-    protected ElementsCollection findAll(String cssSelector) {
-        return element.findAll(cssSelector);
-    }
+  protected ElementsCollection findAll(By selector) {
+    return element.findAll(selector);
+  }
+
+  protected ElementsCollection findAll(String cssSelector) {
+    return element.findAll(cssSelector);
+  }
 }

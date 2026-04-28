@@ -1,4 +1,3 @@
 package api.steps;
 
-public class BaseSteps extends DataSteps {
-}
+public class BaseSteps extends DataSteps {}

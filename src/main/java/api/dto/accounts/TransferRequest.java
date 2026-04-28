@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class TransferRequest extends BaseDto {
-    private Long senderAccountId;
-    private Long receiverAccountId;
-    private double amount;
-    private String description;
+  private Long senderAccountId;
+  private Long receiverAccountId;
+  private double amount;
+  private String description;
 }

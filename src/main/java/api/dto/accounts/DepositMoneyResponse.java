@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DepositMoneyResponse extends BaseDto {
-    private Long id;
-    private String accountNumber;
-    private double balance;
+  private Long id;
+  private String accountNumber;
+  private double balance;
 }

@@ -1,0 +1,95 @@
+name: run tests
+
+#триггер
+on: [push, workflow_dispatch]
+
+jobs:
+  run-tests:
+    name: set up services (review app) and run tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU for ARM images
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - name: Cache Maven repository
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{hashFiles('**/pom.xml')}}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Set up services
+        run: cd infra/docker_compose && bash restart_docker.sh && cd ../..
+
+      - name: Wait for backend health
+        run: |
+          for i in {1..120}; do
+            if curl -fsS http://localhost:4111/v3/api-docs > /dev/null; then
+              echo "Backend is ready"
+              exit 0
+            fi
+            echo "Waiting for backend... ($i/120)"
+            sleep 2
+          done
+          echo "Backend is not ready in time"
+          docker compose -f infra/docker_compose/docker-compose.yaml ps
+          docker compose -f infra/docker_compose/docker-compose.yaml logs backend
+          exit 1
+
+      - name: Run tests
+        run: ./mvnw clean test -q -P "${TEST_PROFILE}"
+        env:
+          APIBASEURL: http://localhost:4111
+          UIBASEURL: http://localhost:80
+          UIREMOTE: http://localhost:4444/wd/hub
+          TEST_PROFILE: api
+          APIVERSION: /api/v1
+          DB_URL: jdbc:postgresql://localhost:5432/nbank
+          DB_USERNAME: postgres
+          DB_PASSWORD: postgres
+
+      - name: Run Swagger coverage
+        if: always()
+        run: .swagger-coverage-commandline/bin/swagger-coverage-commandline -s http://localhost:4111/v3/api-docs -i target/swagger-coverage-output
+
+      - name: Load test report history
+        uses: actions/checkout@v4
+        if: always()
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Build test report
+        uses: simple-elf/allure-report-action@v1.13
+        if: always()
+        with:
+          gh_pages: gh-pages
+          allure_results: target/allure-results
+          allure_history: allure-history
+
+      - name: Build Swagger coverage report
+        if: always()
+        run: sudo cp swagger-coverage-report.html allure-history/${{ github.run_number }}
+
+      - name: Publish test report
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
+
+      - name: Clean up services
+        if: always()
+        run: cd infra/docker_compose && docker compose down
