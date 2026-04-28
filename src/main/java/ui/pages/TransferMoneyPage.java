@@ -19,7 +19,7 @@ public class TransferMoneyPage extends BasePage<TransferMoneyPage> {
   private final SelenideElement amountField = $("input[placeholder='Enter amount']");
   private final SelenideElement sendTransferButton = $(Selectors.byText("🚀 Send Transfer"));
   private final SelenideElement transferAgainButton =
-      $("button[class='custom-btn shadow-custom gray-btn']");
+      $(Selectors.byText("🔁 Transfer Again"));
   private final SelenideElement confirmDetailsCheckBox = $("#confirmCheck");
   private final SelenideElement searchField =
       $("input[placeholder='Enter name to find transactions']");
@@ -68,7 +68,7 @@ public class TransferMoneyPage extends BasePage<TransferMoneyPage> {
   }
 
   public List<TransactionRow> getAllTransactionRows() {
-    ElementsCollection elementsCollection = $(".list-group").parent().findAll("li");
+    ElementsCollection elementsCollection = com.codeborne.selenide.Selenide.$$(".list-group li");
     elementsCollection.shouldBe(CollectionCondition.sizeGreaterThan(0));
     return generatePageElements(elementsCollection, TransactionRow::new);
   }

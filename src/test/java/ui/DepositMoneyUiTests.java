@@ -4,7 +4,6 @@ import api.dto.accounts.AccountResponse;
 import api.steps.DataBaseSteps;
 import common.annotations.CreateUserWithAccount;
 import db.dao.AccountDao;
-import db.dao.comparison.DaoAndModelAssertions;
 import org.junit.jupiter.api.Test;
 import ui.pages.BankAlert;
 import ui.pages.UserDashboardPage;
@@ -15,6 +14,7 @@ public class DepositMoneyUiTests extends BaseUiTest {
   public void depositMoneyUiTest() {
     AccountResponse account = users.getFirst().getAccounts().getFirst();
     double amount = 5000.00;
+    double initialBalance = account.getBalance();
     new UserDashboardPage()
         .open()
         .clickToDepositMoneyButton()
@@ -24,7 +24,7 @@ public class DepositMoneyUiTests extends BaseUiTest {
                 account.getAccountNumber(), amount));
 
     AccountDao accountDao = DataBaseSteps.getAccountByAccountNumber(account.getAccountNumber());
-    DaoAndModelAssertions.assertThat(account, accountDao).match();
+    softly.assertThat(accountDao.getBalance()).isEqualTo(initialBalance + amount);
   }
 
   @Test

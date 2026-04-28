@@ -134,6 +134,6 @@ public class UserSessionExtension implements BeforeEachCallback {
   private static boolean isUiTest(ExtensionContext extensionContext) {
     Class<?> testClass = extensionContext.getRequiredTestClass();
     String packageName = testClass.getPackageName();
-    return packageName.startsWith("tests.ui");
+    return packageName.startsWith("ui");
   }
 }
