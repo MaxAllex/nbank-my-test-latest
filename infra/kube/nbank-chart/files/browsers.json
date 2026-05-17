@@ -1,0 +1,12 @@
+{
+  "chrome": {
+    "default": "latest",
+    "versions": {
+      "latest": {
+        "image": "seleniarm/standalone-chromium",
+        "port": "4444",
+        "path": "/wd/hub"
+      }
+    }
+  }
+}
