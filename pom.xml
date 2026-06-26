@@ -7,6 +7,10 @@
     <groupId>org.example</groupId>
     <artifactId>nbank-my-test-latest</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>calculate_average_app</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
